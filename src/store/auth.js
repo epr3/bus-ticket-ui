@@ -25,6 +25,7 @@ export default {
   }),
   logout: thunk(async () => {
     localStorage.removeItem(process.env.REACT_APP_ACCESS_TOKEN_PATH);
+    history.replace("/login");
   }),
   saveUser: action((state, payload) => {
     state.profile = { ...payload };

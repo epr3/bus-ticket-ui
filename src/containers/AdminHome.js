@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useStoreState, useStoreActions } from "easy-peasy";
 
-import { Table, Alert, Button } from "reactstrap";
+import { DateTime } from "luxon";
+
+import { Table, Alert, Button, ButtonGroup } from "reactstrap";
 
 import ItineraryModal from "./ItineraryModal";
 
@@ -10,26 +12,82 @@ function AdminHome() {
   const getItineraries = useStoreActions(
     actions => actions.itinerary.getItineraries
   );
+  const deleteItinerary = useStoreActions(
+    actions => actions.itinerary.deleteItinerary
+  );
+
   const openModal = useStoreActions(actions => actions.modal.openModal);
   const closeModal = useStoreActions(actions => actions.modal.closeModal);
+
+  const computedItineraries = useMemo(
+    () =>
+      itineraries.map(item => ({
+        id: item.id,
+        bus: `${item.bus.busMake} ${item.bus.busModel}`,
+        interval: `${DateTime.fromISO(item.interval.intervalStart).toFormat(
+          "HH:mm"
+        )}-${DateTime.fromISO(item.interval.intervalEnd).toFormat("HH:mm")}`,
+        route: `${item.route.startCity.name}-${item.route.endCity.name}`
+      })),
+    [itineraries]
+  );
 
   useEffect(() => {
     getItineraries();
   }, [getItineraries]);
+
+  const editEntity = item => {
+    openModal({
+      id: "itinerary",
+      component: (
+        <ItineraryModal
+          item={itineraries.find(itinerary => itinerary.id === item.id)}
+        />
+      ),
+      closeModal: () => closeModal("itinerary")
+    });
+  };
+
+  const deleteEntity = async id => {
+    try {
+      await deleteItinerary(id);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   let render = null;
   if (itineraries.length) {
-    const tableHeader = Object.keys(itineraries[0]).map(item => (
-      <th key={item}>item</th>
+    const tableHeader = Object.keys(computedItineraries[0]).map(item => (
+      <th key={item}>{item}</th>
     ));
+
     render = (
       <Table>
         <thead>
-          <tr>{tableHeader}</tr>
+          <tr>
+            {tableHeader}
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Altceva</td>
-          </tr>
+          {computedItineraries.map(item => (
+            <tr key={item.id}>
+              {Object.values(item).map((cell, index) => (
+                <td key={`cell-${item.id}-${index}`}>{cell}</td>
+              ))}
+              <td>
+                <ButtonGroup>
+                  <Button color="info" onClick={() => editEntity(item)}>
+                    Edit
+                  </Button>
+                  <Button color="danger" onClick={() => deleteEntity(item.id)}>
+                    Delete
+                  </Button>
+                </ButtonGroup>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     );

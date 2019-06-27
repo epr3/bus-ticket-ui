@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import useForm from "react-hook-form";
 import { useStoreActions } from "easy-peasy";
-import { Link } from 'react-router-dom';
 
 import {
   Card,
@@ -11,7 +10,6 @@ import {
   FormGroup,
   Input,
   Label,
-  CardText,
   Button
 } from "reactstrap";
 
@@ -19,8 +17,6 @@ import GuestLayout from "../layouts/GuestLayout";
 
 function Login() {
   const { register, handleSubmit } = useForm();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   const login = useStoreActions(actions => actions.auth.login);
 
@@ -40,8 +36,6 @@ function Login() {
                 name="email"
                 type="email"
                 placeholder="Enter email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
                 innerRef={register}
               />
             </FormGroup>
@@ -51,8 +45,6 @@ function Login() {
                 name="password"
                 type="password"
                 placeholder="Password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
                 innerRef={register}
               />
             </FormGroup>
@@ -60,9 +52,6 @@ function Login() {
               Login
             </Button>
           </Form>
-          <CardText>
-            Don't have an account? Register <Link to="/register">here</Link>
-          </CardText>
         </CardBody>
       </Card>
     </GuestLayout>

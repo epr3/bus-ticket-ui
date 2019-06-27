@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import useForm from "react-hook-form";
 import { useStoreActions } from "easy-peasy";
 
@@ -15,7 +15,7 @@ import {
 
 function CityModal(props) {
   const { register, handleSubmit } = useForm();
-  const [name, setName] = useState("");
+  const [name] = useState((props.item && props.item.name) || "");
 
   const postCity = useStoreActions(actions => actions.city.postCity);
   const putCity = useStoreActions(actions => actions.city.putCity);
@@ -34,12 +34,6 @@ function CityModal(props) {
     }
   };
 
-  useEffect(() => {
-    if (props.item) {
-      setName(props.item.name);
-    }
-  }, [props.item]);
-
   return (
     <ModalBody>
       <Card>
@@ -51,8 +45,7 @@ function CityModal(props) {
                 name="name"
                 type="text"
                 placeholder="Enter city name"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                defaultValue={name}
                 innerRef={register}
               />
             </FormGroup>

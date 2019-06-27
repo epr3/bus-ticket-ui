@@ -58,6 +58,23 @@ const create = (baseURL = process.env.REACT_APP_API_URL) => {
   const putCity = cityObj => api.put(`/cities/${cityObj.id}`, cityObj);
   const deleteCity = id => api.delete(`/cities/${id}`);
 
+  const getRoutes = () => api.get("/routes");
+  const postRoute = routeObj => api.post("/routes", routeObj);
+  const putRoute = routeObj => api.put(`/routes/${routeObj.id}`, routeObj);
+  const deleteRoute = id => api.delete(`/routes/${id}`);
+
+  const getAmenities = () => api.get("/amenities");
+  const postAmenity = amenityObj => api.post("/amenities", amenityObj);
+  const putAmenity = amenityObj =>
+    api.put(`/amenities/${amenityObj.id}`, amenityObj);
+  const deleteAmenity = id => api.delete(`/amenities/${id}`);
+
+  const getIntervals = () => api.get("/intervals");
+  const postInterval = intervalObj => api.post("/intervals", intervalObj);
+  const putInterval = intervalObj =>
+    api.put(`/intervals/${intervalObj.id}`, intervalObj);
+  const deleteInterval = id => api.delete(`/intervals/${id}`);
+
   return {
     postLogin,
     postRegister,
@@ -73,7 +90,19 @@ const create = (baseURL = process.env.REACT_APP_API_URL) => {
     getCities,
     postCity,
     putCity,
-    deleteCity
+    deleteCity,
+    getRoutes,
+    postRoute,
+    putRoute,
+    deleteRoute,
+    getAmenities,
+    postAmenity,
+    deleteAmenity,
+    putAmenity,
+    getIntervals,
+    postInterval,
+    putInterval,
+    deleteInterval
   };
 };
 

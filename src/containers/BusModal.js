@@ -23,8 +23,8 @@ function BusModal(props) {
   const [plateNo] = useState((props.item && props.item.plateNo) || "");
   const [busMake] = useState((props.item && props.item.busMake) || "");
   const [busModel] = useState((props.item && props.item.busModel) || "");
-  const [name] = useState((props.item && props.item.name) || "");
-  const [surname] = useState((props.item && props.item.surname) || "");
+  const [name] = useState((props.item && props.item.driver.name) || "");
+  const [surname] = useState((props.item && props.item.driver.surname) || "");
   const [amenities, setAmenities] = useState(
     (props.item && props.item.amenities.map(item => item.id)) || []
   );

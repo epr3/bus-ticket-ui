@@ -14,19 +14,19 @@ import {
   Button
 } from "reactstrap";
 
-import DatePicker from "react-datepicker";
-
-import "react-datepicker/dist/react-datepicker.css";
+import TimePicker from "react-time-picker";
 
 function IntervalModal(props) {
   const { handleSubmit } = useForm();
   const [intervalStart, setIntervalStart] = useState(
-    (props.item && DateTime.fromISO(props.item.intervalStart).toJSDate()) ||
-      new Date()
+    (props.item &&
+      DateTime.fromISO(props.item.intervalStart).toFormat("HH:mm")) ||
+      DateTime.local().toFormat("HH:mm")
   );
   const [intervalEnd, setIntervalEnd] = useState(
-    (props.item && DateTime.fromISO(props.item.intervalEnd).toJSDate()) ||
-      new Date()
+    (props.item &&
+      DateTime.fromISO(props.item.intervalEnd).toFormat("HH:mm")) ||
+      DateTime.local().toFormat("HH:mm")
   );
 
   const postInterval = useStoreActions(
@@ -37,8 +37,13 @@ function IntervalModal(props) {
 
   const onSubmit = async () => {
     const data = {
+<<<<<<< HEAD
       intervalStart: DateTime.fromJSDate(intervalStart).toISOTime(),
       intervalEnd: DateTime.fromJSDate(intervalEnd).toISOTime()
+=======
+      intervalStart: DateTime.fromFormat(intervalStart, "HH:mm").toISOTime(),
+      intervalEnd: DateTime.fromFormat(intervalEnd, "HH:mm").toISOTime()
+>>>>>>> fixes
     };
     try {
       if (props.item) {
@@ -59,6 +64,7 @@ function IntervalModal(props) {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <FormGroup>
               <Label>Start interval</Label>
+<<<<<<< HEAD
               <DatePicker
                 selected={intervalStart}
                 onChange={setIntervalStart}
@@ -80,6 +86,13 @@ function IntervalModal(props) {
                 dateFormat="HH:MM"
                 timeCaption="Time"
               />
+=======
+              <TimePicker onChange={setIntervalStart} value={intervalStart} />
+            </FormGroup>
+            <FormGroup>
+              <Label>End interval</Label>
+              <TimePicker onChange={setIntervalEnd} value={intervalEnd} />
+>>>>>>> fixes
             </FormGroup>
             <Button color="primary" type="submit">
               Submit
